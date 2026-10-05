@@ -19,7 +19,7 @@ Node 18.18+ (Node 20 or 22 recommended).
 ## Before you share the link
 
 1. Deploy `dist/` to any static host (Vercel, Netlify, Cloudflare Pages, GitHub Pages).
-2. Copy `.env.example` to `.env` and set `VITE_SITE_URL` to the final address (no trailing slash), then rebuild.
+2. The site address is set to https://apd-signature-frames.pages.dev (in `index.html` meta tags and `vite.config.ts`). If the domain changes, update both and rebuild.
    WhatsApp only shows the preview card when `og:image` is an absolute URL.
 3. Paste the link into WhatsApp once to warm the preview cache.
 

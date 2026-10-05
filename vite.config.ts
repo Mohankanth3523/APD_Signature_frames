@@ -4,7 +4,7 @@ import tailwindcss from '@tailwindcss/vite';
 
 // Fallback so index.html metadata never ships a raw %VITE_SITE_URL% token.
 // Set the real address in .env (copy .env.example) before deploying.
-process.env.VITE_SITE_URL ??= 'https://example.com';
+process.env.VITE_SITE_URL ??= 'https://apd-signature-frames.pages.dev';
 
 export default defineConfig({
   plugins: [react(), tailwindcss()],
