@@ -1,0 +1,202 @@
+@import 'tailwindcss';
+
+/* Phones held sideways (and other short, wide screens): switch tall stacks to side-by-side. */
+@custom-variant short (@media (orientation: landscape) and (max-height: 540px));
+
+/* ──────────────────────────────────────────────────────────────
+   APD Signature Frames — design tokens
+   Palette drawn from the printed invitation: ivory paper, gilt,
+   burgundy ribbon, forest velvet and a deep navy from the monogram.
+   ────────────────────────────────────────────────────────────── */
+@theme {
+  --color-ivory-50: #fdfaf3;
+  --color-ivory-100: #f8f2e4;
+  --color-ivory-200: #efe4cc;
+  --color-ivory-300: #e2d2ae;
+
+  --color-gold-200: #f3e2ad;
+  --color-gold-300: #e9cf8a;
+  --color-gold-400: #d6b261;
+  --color-gold-500: #c49a45;
+  --color-gold-600: #a67c2e;
+  --color-gold-700: #7f5c1e;
+
+  --color-burgundy-500: #8e1b2e;
+  --color-burgundy-600: #7a1426;
+  --color-burgundy-700: #5e0e1d;
+  --color-burgundy-800: #430913;
+
+  --color-forest-600: #1b4a36;
+  --color-forest-700: #123a2a;
+  --color-forest-800: #0b2a1e;
+  --color-forest-900: #071c14;
+
+  --color-navy-600: #1d2f57;
+  --color-navy-700: #13213f;
+  --color-navy-800: #0c162b;
+
+  --color-ink: #231a12;
+  --color-ink-soft: #4a3c2c;
+
+  --font-display: 'Cinzel', 'Trajan Pro', 'Times New Roman', serif;
+  --font-serif: 'Cormorant Garamond', 'Cormorant', Garamond, Georgia, serif;
+  --font-script: 'Pinyon Script', 'Snell Roundhand', 'Apple Chancery', cursive;
+
+  --tracking-inscription: 0.22em;
+  --tracking-label: 0.32em;
+
+  --ease-luxe: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-curtain: cubic-bezier(0.76, 0, 0.24, 1);
+
+  --animate-sheen: sheen 5.5s var(--ease-luxe) infinite;
+  --animate-drift: drift var(--drift-duration, 14s) linear infinite;
+  --animate-breathe: breathe 2.8s ease-in-out infinite;
+
+  @keyframes sheen {
+    0%, 55% { transform: translateX(-120%) skewX(-18deg); }
+    100% { transform: translateX(220%) skewX(-18deg); }
+  }
+  @keyframes drift {
+    0% { transform: translate3d(0, 0, 0) rotate(0deg); opacity: 0; }
+    12% { opacity: var(--drift-opacity, 0.7); }
+    85% { opacity: var(--drift-opacity, 0.7); }
+    100% { transform: translate3d(var(--drift-x, 20px), -110vh, 0) rotate(240deg); opacity: 0; }
+  }
+  @keyframes breathe {
+    0%, 100% { transform: scale(1); opacity: 0.55; }
+    50% { transform: scale(1.18); opacity: 0; }
+  }
+}
+
+/* ── Base ─────────────────────────────────────────────────────── */
+@layer base {
+  :root {
+    --paper-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .35 0 0 0 0 .27 0 0 0 0 .15 0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    --gold-foil: linear-gradient(
+      100deg,
+      #8a6420 0%,
+      #c9a04a 18%,
+      #f3e2ad 34%,
+      #c49a45 50%,
+      #9a7226 66%,
+      #e9cf8a 84%,
+      #a67c2e 100%
+    );
+    --gold-line: linear-gradient(90deg, transparent, #c49a45 18%, #f3e2ad 50%, #c49a45 82%, transparent);
+    -webkit-tap-highlight-color: transparent;
+    text-rendering: optimizeLegibility;
+  }
+
+  html {
+    background: var(--color-forest-900);
+    scroll-behavior: smooth;
+  }
+
+  body {
+    margin: 0;
+    min-height: 100dvh;
+    background-color: var(--color-ivory-100);
+    color: var(--color-ink);
+    font-family: var(--font-serif);
+    font-size: clamp(1.0625rem, 0.98rem + 0.3vw, 1.3rem);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  body.is-locked {
+    overflow: hidden;
+    touch-action: none;
+  }
+
+  ::selection {
+    background: var(--color-burgundy-600);
+    color: var(--color-ivory-50);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-gold-500);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  img {
+    -webkit-user-drag: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
+    }
+  }
+}
+
+/* ── Signature utilities ──────────────────────────────────────── */
+
+/* Metallic gold lettering */
+@utility text-foil {
+  background-image: linear-gradient(176deg, #fbf0c9 0%, #ecd18c 30%, #c9a04a 58%, #a67c2e 80%, #d6b261 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Deeper gilt for use on ivory where contrast matters */
+@utility text-gilt {
+  background-image: linear-gradient(180deg, #a67c2e 0%, #7f5c1e 55%, #5c4012 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+
+@utility bg-foil {
+  background-image: var(--gold-foil);
+}
+
+@utility rule-gold {
+  height: 1px;
+  background-image: var(--gold-line);
+}
+
+/* Ivory paper with a whisper of grain */
+@utility paper {
+  background-color: var(--color-ivory-100);
+  background-image: var(--paper-grain),
+    radial-gradient(120% 80% at 50% 0%, rgba(255, 252, 244, 0.9), rgba(239, 228, 204, 0) 70%);
+  background-blend-mode: multiply, normal;
+}
+
+/* Forest velvet with a subtle damask lattice */
+@utility velvet {
+  background-color: var(--color-forest-800);
+  background-image: radial-gradient(130% 90% at 50% 10%, rgba(27, 74, 54, 0.85), rgba(7, 28, 20, 0) 65%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64' viewBox='0 0 64 64'%3E%3Cg fill='none' stroke='%23c49a45' stroke-opacity='.07' stroke-width='1'%3E%3Cpath d='M32 4c6 10 6 18 0 28c-6-10-6-18 0-28zM32 32c6 10 6 18 0 28c-6-10-6-18 0-28zM4 32c10-6 18-6 28 0c-10 6-18 6-28 0zM32 32c10-6 18-6 28 0c-10 6-18 6-28 0z'/%3E%3C/g%3E%3C/svg%3E");
+}
+
+@utility label-caps {
+  font-family: var(--font-display);
+  font-size: 0.7rem;
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+}
+
+@utility safe-bottom {
+  padding-bottom: max(1rem, env(safe-area-inset-bottom));
+}
+
+/* Hide scrollbars on horizontal galleries while keeping them scrollable */
+@utility no-scrollbar {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
